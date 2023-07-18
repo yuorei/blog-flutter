@@ -40,16 +40,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _callAPI() async {
     var url = Uri.parse(
-      'https://raw.githubusercontent.com/dev-yakuza/users/master/api.json',
+      'https://api.open-meteo.com/v1/forecast?latitude=35.6785&longitude=139.6823&hourly=temperature_2m&timezone=Asia%2FTokyo',
     );
     var response = await http.get(url);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
-    url = Uri.parse('https://reqbin.com/sample/post/json');
-    response = await http.post(url, body: {
-      'key': 'value',
-    });
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
   }
@@ -65,33 +58,28 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Center(
-        child: Container(
-          color: Colors.red,
-          width: 450,
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-
-              ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
             ),
-          ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            ElevatedButton(
+              onPressed: _callAPI,
+              child: const Text('Call API'),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
