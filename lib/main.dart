@@ -37,7 +37,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
   Future<void> fetchArticles() async {
     final response = await http.get(Uri.parse('http://localhost:8080/foo'));
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
+      // utf8.decode(response.bodyBytes) しないと文字化けしてしまう
+      final jsonData = json.decode(utf8.decode(response.bodyBytes));
       if (jsonData is List<dynamic>) {
         setState(() {
           articles = jsonData;
