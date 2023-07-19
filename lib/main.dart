@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: '.env');
   runApp(BlogApp());
 }
 
@@ -35,7 +37,9 @@ class _ArticleListPageState extends State<ArticleListPage> {
   }
 
   Future<void> fetchArticles() async {
-    final response = await http.get(Uri.parse('http://localhost:8080/foo'));
+    final url = dotenv.env['URL'];
+    // urlのうしろに "!" をつける
+    final response = await http.get(Uri.parse(url!));
     if (response.statusCode == 200) {
       // utf8.decode(response.bodyBytes) しないと文字化けしてしまう
       final jsonData = json.decode(utf8.decode(response.bodyBytes));
